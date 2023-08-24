@@ -1,0 +1,12 @@
+name: GPX Reader ui plugin
+version: 0.2.0
+id: gpx-reader
+extensions:
+  - id: gpx-reader
+    type: widget
+    name: GPX Reader ui plugin
+    schema:
+      groups:
+        - id: default
+          title: default
+          fields:
