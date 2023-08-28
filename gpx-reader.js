@@ -457,11 +457,11 @@ reearth.ui.show(`
   let layers;
   let property;
   let imageList;
-  let imgProperty;
   let newProperty;
 
 
   const newPath = document.getElementById("new-path");
+
   let i = 0;
   let containerId
   let pointLat;
@@ -477,13 +477,13 @@ reearth.ui.show(`
   let latId = "lat";
   let longId = "long";
   let fileName;
-  // let changeMarkerId;
-
 
   window.addEventListener("message", async function (e) {
     if (e.source !== parent) return;
     reearth = e.source.reearth;
     layers = reearth.layers.layers;
+    newProperty = e.data.property;
+
 
     // put the triger to upload file on button
     const trigerInput = () => input.click();
@@ -521,6 +521,13 @@ reearth.ui.show(`
       // reset after each upload, allowing to consecutively upload the same file without any restrictions
       e.target.value = null;
     });
+
+    if (JSON.stringify(property) != JSON.stringify(newProperty)) {
+  property = newProperty;
+  imageList = property.models;
+  handleImageList(imageList);
+}
+
   })
 
   function handleCloseOpenPopup(e) {
@@ -747,45 +754,24 @@ reearth.ui.show(`
 
     // close and open accordion
     handleAccordion(markersAccordionBtn, panel, accordionBtnArrow);
-
-    // possibility to change markers onto customers image
-    customiseMarkers(markersAccordionId);
   };
 
+function handleImageList(images) {
 
-function customiseMarkers (markersAccordionId){
-  // override marker iconst into customers
-  window.addEventListener("message", async (e) => {
-if (e.source !== parent) return;
-newProperty = e.data.property;
-reearth = e.source.reearth;
+  let buttons = document.querySelectorAll('.change-marker');
+  console.log("buttons: ", buttons);
 
-if (JSON.stringify(property) != JSON.stringify(newProperty)) {
-  property = newProperty;
-  imageList = property.models;
-  handleImageList(imageList, markersAccordionId);
-}
-})
-}
-
-
-function handleImageList(files, markersAccordionId) {
-
-  for (const file of files) {
-    let markerId;
-    if (file.modelUrl) {
-      let buttons = document.getElementById(markersAccordionId).querySelectorAll('.change-marker');
-      
-      // change the way of handleImageList and click event
+  for (const img of images) {
+    if (img.modelUrl) {
       const buttonPressed = e => {
         console.log(e.target.id);  // Get ID of Clicked Element
-        markerId = e.target.id;
+        let markerId = e.target.id;
+        console.log("markerId: ", markerId);
         reearth.layers.overrideProperty(markerId, {
                   default: {
-                    image: file.modelUrl,
+                    image: img.modelUrl,
                   }
                 });
-        
       }
     
       for (let button of buttons) {
@@ -793,10 +779,7 @@ function handleImageList(files, markersAccordionId) {
       }
 
   } else {
-    reearth.layers.overrideProperty(markerId, {
-                  default: {
-                  }
-                });
+    console.log("no default url found!")
         }
 }
         }
