@@ -369,13 +369,21 @@ reearth.ui.show(`
     transition-duration: 0.2s;
   }
 
-
   .marker-icon {
     width: 20px;
     height: 20px;
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M9.35283 15.1569C10.0789 14.5788 10.8047 13.9255 11.484 13.2085C13.4651 11.1173 14.6667 8.9144 14.6667 6.66667C14.6667 2.98477 11.6819 0 8.00004 0C4.31814 0 1.33337 2.98477 1.33337 6.66667C1.33337 8.9144 2.53498 11.1173 4.51607 13.2085C5.19537 13.9255 5.92121 14.5788 6.64726 15.1569C6.90177 15.3596 7.13859 15.5387 7.3519 15.6928C7.48189 15.7867 7.57661 15.8523 7.63024 15.888C7.85417 16.0373 8.14591 16.0373 8.36984 15.888C8.42347 15.8523 8.51819 15.7867 8.64818 15.6928C8.86149 15.5387 9.09831 15.3596 9.35283 15.1569ZM10.5161 12.2915C9.88287 12.9599 9.20246 13.5723 8.52226 14.1139C8.33659 14.2617 8.16158 14.3957 8.00004 14.5151C7.8385 14.3957 7.66349 14.2617 7.47783 14.1139C6.79763 13.5723 6.11721 12.9599 5.48401 12.2915C3.71511 10.4243 2.66671 8.50226 2.66671 6.66667C2.66671 3.72115 5.05452 1.33333 8.00004 1.33333C10.9456 1.33333 13.3334 3.72115 13.3334 6.66667C13.3334 8.50226 12.285 10.4243 10.5161 12.2915ZM8.00004 9.33333C6.52728 9.33333 5.33337 8.13943 5.33337 6.66667C5.33337 5.19391 6.52728 4 8.00004 4C9.4728 4 10.6667 5.19391 10.6667 6.66667C10.6667 8.13943 9.4728 9.33333 8.00004 9.33333ZM9.33337 6.66667C9.33337 7.40305 8.73642 8 8.00004 8C7.26366 8 6.66671 7.40305 6.66671 6.66667C6.66671 5.93029 7.26366 5.33333 8.00004 5.33333C8.73642 5.33333 9.33337 5.93029 9.33337 6.66667Z" fill="%23C7C5C5"/></svg>');
     background-repeat: no-repeat;
     background-position: center;
+  }
+
+  .change-marker{
+    width: 25px;
+    height: 25px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18.5 12C20.4 12 22 13.6 22 15.5C22 18.1 18.5 22 18.5 22C18.5 22 15 18.1 15 15.5C15 13.6 16.6 12 18.5 12ZM18.5 16.8C19.2 16.8 19.8 16.2 19.7 15.6C19.7 15 19.1 14.4 18.5 14.4C17.9 14.4 17.3 14.9 17.3 15.6C17.3 16.2 17.8 16.8 18.5 16.8ZM20 8H4V18H13.5C13.79 18.68 14.13 19.35 14.5 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V6C2 4.89 2.89 4 4 4H10L12 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V11.34C21.42 10.84 20.74 10.45 20 10.23V8Z" fill="%23BFBFBF"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
   }
 
   .panel {
@@ -448,9 +456,12 @@ reearth.ui.show(`
   var cesium;
   let layers;
   let property;
+  let imageList;
+  let imgProperty;
+  let newProperty;
+
 
   const newPath = document.getElementById("new-path");
-
   let i = 0;
   let containerId
   let pointLat;
@@ -466,12 +477,10 @@ reearth.ui.show(`
   let latId = "lat";
   let longId = "long";
   let fileName;
+  // let changeMarkerId;
 
 
-  let img = 'https://images.unsplash.com/photo-1655661811387-989070a0fbc3?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1858&q=80';
-
-
-  window.addEventListener("message", function (e) {
+  window.addEventListener("message", async function (e) {
     if (e.source !== parent) return;
     reearth = e.source.reearth;
     layers = reearth.layers.layers;
@@ -485,7 +494,6 @@ reearth.ui.show(`
       const fr = e.target;
       var result = fr.result;
 
-      // changeStatus('Finished Loading!');
       // console.log('Result:', result);
       handleFileList(result);
       // console.log("1");
@@ -513,7 +521,7 @@ reearth.ui.show(`
       // reset after each upload, allowing to consecutively upload the same file without any restrictions
       e.target.value = null;
     });
-  });
+  })
 
   function handleCloseOpenPopup(e) {
     let wapperElm = document.getElementById("wrapper");
@@ -547,6 +555,7 @@ reearth.ui.show(`
     }
   }
 
+
     // Handle Update IFrame Size
     function updateIframeSize() {
         let newWrapperElm = document.getElementById("wrapper");
@@ -554,6 +563,7 @@ reearth.ui.show(`
         let expanded = false;
         parent.postMessage({ type: "resize", expanded, heightWp }, "*");
     }
+
 
 
   // add new markers and push into a new features array
@@ -633,19 +643,12 @@ reearth.ui.show(`
 
           createMarkerAccordion(feature, ind, markerId)
           arreymarkerId.push(markerId);
-
-          // reearth.layers.overrideProperty(markerId, {
-          //   default: {
-          //   image: img,
-          //   }
-          //   })
         })
-
+        
         function removeMarkers() {
           hideMarkersLayers(arreymarkerId);
-          // console.log(arreymarkerId)
+          // console.log(arreymarkerId);
         }
-
 
         document.getElementById(removePathBtnId).addEventListener('click', removeMarkers);
         if (ind = features.length) break;
@@ -656,9 +659,7 @@ reearth.ui.show(`
       showNoPoints.classList.add('no-points');
       document.getElementById(markersAccordionId).appendChild(showNoPoints);
       //   console.log("No way points");
-    }
-
-  }
+    } 
 
   function hideMarkersLayers(arreymarkerId) {
     reearth.layers.layers;
@@ -666,6 +667,7 @@ reearth.ui.show(`
       reearth.layers.hide(arreymarkerId[i]);
     }
   }
+}
 
   // create HTML accordion block for Marker
   function createMarkerAccordion(feature, ind, markerId) {
@@ -718,10 +720,13 @@ reearth.ui.show(`
     heightTxt.textContent = pointHeight || "Landed";
 
     // create the hidden input that will collect markers id to hide them
-    let markerValue = document.createElement('input');
+    let markerValue = document.createElement('div');
     markerValue.classList.add('markerId-input');
-    markerValue.setAttribute('type', 'hidden');
-    markerValue.setAttribute('markerId', markerId)
+    markerValue.classList.add('change-marker');
+    let markerValueId = markerId;
+    markerValue.id = markerValueId;
+    markerValue.setAttribute('markerId', markerId);
+
     // console.log(markerValue);
 
     document.getElementById(markersAccordionId).appendChild(markersAccordionBtn);
@@ -740,9 +745,61 @@ reearth.ui.show(`
     ul3.appendChild(heightTxt);
     document.getElementById(markersAccordionId).appendChild(markerValue);
 
+    // close and open accordion
     handleAccordion(markersAccordionBtn, panel, accordionBtnArrow);
 
+    // possibility to change markers onto customers image
+    customiseMarkers(markersAccordionId);
   };
+
+
+function customiseMarkers (markersAccordionId){
+  // override marker iconst into customers
+  window.addEventListener("message", async (e) => {
+if (e.source !== parent) return;
+newProperty = e.data.property;
+reearth = e.source.reearth;
+
+if (JSON.stringify(property) != JSON.stringify(newProperty)) {
+  property = newProperty;
+  imageList = property.models;
+  handleImageList(imageList, markersAccordionId);
+}
+})
+}
+
+
+function handleImageList(files, markersAccordionId) {
+
+  for (const file of files) {
+    let markerId;
+    if (file.modelUrl) {
+      let buttons = document.getElementById(markersAccordionId).querySelectorAll('.change-marker');
+      
+      // change the way of handleImageList and click event
+      const buttonPressed = e => {
+        console.log(e.target.id);  // Get ID of Clicked Element
+        markerId = e.target.id;
+        reearth.layers.overrideProperty(markerId, {
+                  default: {
+                    image: file.modelUrl,
+                  }
+                });
+        
+      }
+    
+      for (let button of buttons) {
+        button.addEventListener("click", buttonPressed);
+      }
+
+  } else {
+    reearth.layers.overrideProperty(markerId, {
+                  default: {
+                  }
+                });
+        }
+}
+        }
 
   // handle accordion for each Marker
   function handleAccordion(markersAccordionBtn, panel, accordionBtnArrow) {

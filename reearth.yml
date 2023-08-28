@@ -1,5 +1,5 @@
 name: GPX Reader ui plugin
-version: 0.2.0
+version: 0.3.0
 id: gpx-reader
 extensions:
   - id: gpx-reader
@@ -7,6 +7,27 @@ extensions:
     name: GPX Reader ui plugin
     schema:
       groups:
-        - id: default
-          title: default
+        - id: models
+          title: シンボル
+          list: true
+          representativeField: modelName
           fields:
+            - id: modelOptions
+              type: string
+              title: Model
+              defaultValue: icon
+              choices:
+                - key: icon
+                  label: Icon
+                - key: model
+                  label: Model
+            - id: modelUrl
+              type: url
+              title: Upload File
+              ui: file
+            - id: modelName
+              type: string
+              title: Name
+            - id: scale
+              type: number
+              title: Scale
