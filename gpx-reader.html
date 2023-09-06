@@ -40,13 +40,13 @@ reearth.ui.show(`
   }
 
 
-.extendedh,
+  .extendedh,
   .extendedh {
     width: 44px;
     cursor: pointer;
   }
 
- .extendedv,
+  .extendedv,
   .extendedv {
     height: 44px;
   }
@@ -88,6 +88,7 @@ reearth.ui.show(`
   }
 
   #content-wrap {
+    position: relative;
     display: flex;
     flex-direction: column-reverse;
     max-height: 550px;
@@ -166,6 +167,10 @@ reearth.ui.show(`
     border-radius: 4px;
     background: var(--container-bg);
     border: 1px solid var(--border);
+  }
+
+  .container:hover {
+    border: 1px solid var(--accent);
   }
 
   .path-header {
@@ -330,6 +335,7 @@ reearth.ui.show(`
     margin: 4px 0;
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     width: 100%;
     color: var(--nutral);
   }
@@ -337,7 +343,7 @@ reearth.ui.show(`
   .markers-accordion__btn {
     display: flex;
     align-items: center;
-    width: 100%;
+    width: calc(100% - 30px);
     flex-shrink: 0;
     text-align: start;
     background: transparent;
@@ -346,6 +352,7 @@ reearth.ui.show(`
     cursor: pointer;
     transition: 0.4s;
   }
+
 
   .accordionBtn-Arrow__bottom {
     width: 0;
@@ -377,10 +384,26 @@ reearth.ui.show(`
     background-position: center;
   }
 
-  .change-marker{
+  /* @media screen and (min-width: 901px) {
+    .change-marker{
+      display: none;
+    }
+  } */
+
+  .change-marker {
+    position: relative;
     width: 25px;
     height: 25px;
-    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18.5 12C20.4 12 22 13.6 22 15.5C22 18.1 18.5 22 18.5 22C18.5 22 15 18.1 15 15.5C15 13.6 16.6 12 18.5 12ZM18.5 16.8C19.2 16.8 19.8 16.2 19.7 15.6C19.7 15 19.1 14.4 18.5 14.4C17.9 14.4 17.3 14.9 17.3 15.6C17.3 16.2 17.8 16.8 18.5 16.8ZM20 8H4V18H13.5C13.79 18.68 14.13 19.35 14.5 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V6C2 4.89 2.89 4 4 4H10L12 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V11.34C21.42 10.84 20.74 10.45 20 10.23V8Z" fill="%23BFBFBF"/></svg>');
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18.5 12C20.4 12 22 13.6 22 15.5C22 18.1 18.5 22 18.5 22C18.5 22 15 18.1 15 15.5C15 13.6 16.6 12 18.5 12ZM18.5 16.8C19.2 16.8 19.8 16.2 19.7 15.6C19.7 15 19.1 14.4 18.5 14.4C17.9 14.4 17.3 14.9 17.3 15.6C17.3 16.2 17.8 16.8 18.5 16.8ZM21 7H3V19H13.5C14 19.4142 14.13 19.35 14.5 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V6C2 4.89 2.89 4.5 4 4.5H10L12 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V11.34C21.42 10.84 21.5 10.5 21 10V7Z" fill="%23BFBFBF"/></svg>');
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+  }
+
+  .change-marker:hover {
+    width: 25px;
+    height: 25px;
+    background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18.5 12C20.4 12 22 13.6 22 15.5C22 18.1 18.5 22 18.5 22C18.5 22 15 18.1 15 15.5C15 13.6 16.6 12 18.5 12ZM18.5 16.8C19.2 16.8 19.8 16.2 19.7 15.6C19.7 15 19.1 14.4 18.5 14.4C17.9 14.4 17.3 14.9 17.3 15.6C17.3 16.2 17.8 16.8 18.5 16.8ZM21 7H3V19H13.5C14 19.4142 14.13 19.35 14.5 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V6C2 4.89 2.89 4.5 4 4.5H10L12 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V11.34C21.42 10.84 21.5 10.5 21 10V7Z" fill="%233B3CD0"/></svg>');
     background-repeat: no-repeat;
     background-position: center;
     cursor: pointer;
@@ -414,6 +437,34 @@ reearth.ui.show(`
   .no-points {
     margin: 0;
   }
+
+  .show {
+    display: block;
+    cursor: pointer;
+  }
+
+  .hide {
+    display: none;
+  }
+
+ .markers-list {
+  position: fixed;
+  top: 35%;
+  width: fit-content;
+  padding: 4px 8px;
+  background-color: var(--background);
+  color: var(--nutral);
+  font-family: Noto Sans;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  align-self: center;
+  border-radius: 4px;
+  border: 2px solid var(--border);
+  list-style: none;
+  z-index: 1;
+ }
+
 </style>
 <div class="height-44" id="wrapper">
   <h3 id="title" onclick="handleCloseOpenPopup(event)">
@@ -436,7 +487,11 @@ reearth.ui.show(`
     <div class="new-path__btn">
       <input type="file" id="input" />
     </div>
-    <div id="content-wrap"></div>
+    <div id="content-wrap">
+      <select class="markers-list hide" id="markersList">
+        <option value="">Choose an icon</option>
+      </select>
+    </div>
   </div>
 </div>
 <!-- /content -->
@@ -461,6 +516,7 @@ reearth.ui.show(`
 
 
   const newPath = document.getElementById("new-path");
+  const markersList = document.getElementById("markersList");
 
   let i = 0;
   let containerId
@@ -469,8 +525,6 @@ reearth.ui.show(`
   let pointHeight;
   let pointName;
   let pointDesc;
-  let pointLatToString;
-  let pointLngToString;
   let waypointsListId;
   let inputForWidthId;
   let heightId = "height";
@@ -484,51 +538,52 @@ reearth.ui.show(`
     layers = reearth.layers.layers;
     newProperty = e.data.property;
 
-
-    // put the triger to upload file on button
-    const trigerInput = () => input.click();
-    newPath.addEventListener('click', trigerInput);
-
-    // upload file
-    const loaded = (e) => {
-      const fr = e.target;
-      var result = fr.result;
-
-      // console.log('Result:', result);
-      handleFileList(result);
-      // console.log("1");
-    }
-
-    const errorHandler = (e) => {
-      alert('Error: ' + e.target.error.name);
-    }
-
-    // reading file 
-    const processFile = (file) => {
-      const fr = new FileReader();
-
-      fr.readAsDataURL(file);
-      fr.addEventListener('loadend', loaded);
-    }
-
-    // getting file from input 
-    document.getElementById('input').addEventListener('change', (e) => {
-      const file = document.getElementById('input').files[0];
-      fileName = file.name;
-      if (file) {
-        processFile(file)
-      }
-      // reset after each upload, allowing to consecutively upload the same file without any restrictions
-      e.target.value = null;
-    });
-
     if (JSON.stringify(property) != JSON.stringify(newProperty)) {
-  property = newProperty;
-  imageList = property.models;
-  handleImageList(imageList);
-}
+      property = newProperty;
+      imageList = property.models;
+      handleImageList(imageList);
 
+    }
   })
+
+  // put the triger to upload file on button
+  const trigerInput = () => input.click();
+  newPath.addEventListener('click', trigerInput);
+
+
+  // upload file
+  const loaded = (e) => {
+    const fr = e.target;
+    var result = fr.result;
+
+    // console.log('Result:', result);
+    handleFileList(result);
+    // console.log("1");
+  }
+
+  const errorHandler = (e) => {
+    alert('Error: ' + e.target.error.name);
+  }
+
+  // reading file 
+  const processFile = (file) => {
+    const fr = new FileReader();
+
+    fr.readAsDataURL(file);
+    fr.addEventListener('loadend', loaded);
+  }
+
+  // getting file from input 
+  document.getElementById('input').addEventListener('change', (e) => {
+    const file = document.getElementById('input').files[0];
+    fileName = file.name;
+    if (file) {
+      processFile(file)
+    }
+    // reset after each upload, allowing to consecutively upload the same file without any restrictions
+    e.target.value = null;
+  });
+
 
   function handleCloseOpenPopup(e) {
     let wapperElm = document.getElementById("wrapper");
@@ -553,6 +608,7 @@ reearth.ui.show(`
           }
           if (expanded) {
             document.documentElement.classList.add("extendedh", "extendedv");
+            // markersList.classList.add('hide');
           } else {
             document.documentElement.classList.remove("extendedh", "extendedv");
           }
@@ -563,13 +619,13 @@ reearth.ui.show(`
   }
 
 
-    // Handle Update IFrame Size
-    function updateIframeSize() {
-        let newWrapperElm = document.getElementById("wrapper");
-        let heightWp = newWrapperElm.offsetHeight;
-        let expanded = false;
-        parent.postMessage({ type: "resize", expanded, heightWp }, "*");
-    }
+  // Handle Update IFrame Size
+  function updateIframeSize() {
+    let newWrapperElm = document.getElementById("wrapper");
+    let heightWp = newWrapperElm.offsetHeight;
+    let expanded = false;
+    parent.postMessage({ type: "resize", expanded, heightWp }, "*");
+  }
 
 
 
@@ -651,7 +707,7 @@ reearth.ui.show(`
           createMarkerAccordion(feature, ind, markerId)
           arreymarkerId.push(markerId);
         })
-        
+
         function removeMarkers() {
           hideMarkersLayers(arreymarkerId);
           // console.log(arreymarkerId);
@@ -666,15 +722,15 @@ reearth.ui.show(`
       showNoPoints.classList.add('no-points');
       document.getElementById(markersAccordionId).appendChild(showNoPoints);
       //   console.log("No way points");
-    } 
+    }
 
-  function hideMarkersLayers(arreymarkerId) {
-    reearth.layers.layers;
-    for (let i = 0; i < arreymarkerId.length; i++) {
-      reearth.layers.hide(arreymarkerId[i]);
+    function hideMarkersLayers(arreymarkerId) {
+      reearth.layers.layers;
+      for (let i = 0; i < arreymarkerId.length; i++) {
+        reearth.layers.hide(arreymarkerId[i]);
+      }
     }
   }
-}
 
   // create HTML accordion block for Marker
   function createMarkerAccordion(feature, ind, markerId) {
@@ -728,7 +784,6 @@ reearth.ui.show(`
 
     // create the hidden input that will collect markers id to hide them
     let markerValue = document.createElement('div');
-    markerValue.classList.add('markerId-input');
     markerValue.classList.add('change-marker');
     let markerValueId = markerId;
     markerValue.id = markerValueId;
@@ -740,6 +795,7 @@ reearth.ui.show(`
     markersAccordionBtn.appendChild(accordionBtnArrow);
     markersAccordionBtn.appendChild(markerIcon);
     markersAccordionBtn.appendChild(markersAccordionBtnText);
+    document.getElementById(markersAccordionId).appendChild(markerValue);
     document.getElementById(markersAccordionId).appendChild(panel);
     panel.appendChild(ul1);
     ul1.appendChild(latLabel);
@@ -750,39 +806,10 @@ reearth.ui.show(`
     panel.appendChild(ul3);
     ul3.appendChild(heightLabel);
     ul3.appendChild(heightTxt);
-    document.getElementById(markersAccordionId).appendChild(markerValue);
 
     // close and open accordion
     handleAccordion(markersAccordionBtn, panel, accordionBtnArrow);
   };
-
-function handleImageList(images) {
-
-  let buttons = document.querySelectorAll('.change-marker');
-  console.log("buttons: ", buttons);
-
-  for (const img of images) {
-    if (img.modelUrl) {
-      const buttonPressed = e => {
-        console.log(e.target.id);  // Get ID of Clicked Element
-        let markerId = e.target.id;
-        console.log("markerId: ", markerId);
-        reearth.layers.overrideProperty(markerId, {
-                  default: {
-                    image: img.modelUrl,
-                  }
-                });
-      }
-    
-      for (let button of buttons) {
-        button.addEventListener("click", buttonPressed);
-      }
-
-  } else {
-    console.log("no default url found!")
-        }
-}
-        }
 
   // handle accordion for each Marker
   function handleAccordion(markersAccordionBtn, panel, accordionBtnArrow) {
@@ -798,6 +825,103 @@ function handleImageList(images) {
     });
   }
 
+  function handleImageList(data) {
+
+    let imageListArray = [];
+    imageListArray.push({
+      id: "default",
+      type: "icon",
+      name: "Default",
+      url: "no",
+      scale: 1
+    });
+
+
+    data?.map((item) => {
+      imageListArray.push({
+        id: item.id,
+        type: item.modelOptions || "icon",
+        name: item.modelName,
+        url: item.modelUrl,
+        scale: item.scale || 1
+      });
+    });
+
+    // console.log("imageListArray: ", imageListArray);
+    // console.log("markersList: ", markersList);
+
+    let newArray = Array();
+
+    for (let i = 0; imageListArray.length > i; i++) {
+      let imageId = imageListArray[i].id;
+      let imageName = imageListArray[i].name;
+      let imageUrl = imageListArray[i].url;
+      let imageScale = imageListArray[i].scale;
+      if ((imageId && imageName && imageUrl || imageScale) && (imageId !== imageListArray[imageListArray.length - 1]) && (imageId != undefined) && (imageId != "default")) {
+        // console.log("IMAGE: ", imageId, imageName, imageUrl);
+        newArray.push(imageListArray[i]);
+      }
+
+      createOptions(newArray);
+      console.log("newArray: ", newArray);
+
+
+    }
+
+    function createOptions(data) {
+
+      document.getElementById("markersList").remove();
+
+      let markersList = document.createElement('select');
+      markersList.id = "markersList";
+      markersList.classList.add('markers-list');
+      markersList.classList.add('hide');
+
+      let firstOtion = document.createElement('option');
+      firstOtion.textContent = "Choose an icon";
+      firstOtion.setAttribute('selected', "selected")
+      markersList.appendChild(firstOtion);
+
+      contentWrap.appendChild(markersList);
+
+      console.log(markersList);
+
+      data.forEach((item) => {
+        let imageNameBlock = document.createElement('option');
+        imageNameBlock.innerHTML = item.name;
+        imageNameBlock.setAttribute('id', item.id)
+        imageNameBlock.setAttribute('value', item.url)
+        markersList.appendChild(imageNameBlock);
+      })
+
+      const buttons = document.querySelectorAll('.change-marker');
+      console.log("change-marker btns : ", buttons);
+
+      let buttonPressed = e => {
+        markersList.classList.toggle('hide');
+        markersList.classList.toggle('show');
+        // console.log(markersList);
+
+     // Get ID of Clicked Element
+        let markerId = e.target.id;
+
+
+
+// image: = get the value of selectet option 
+
+        // reearth.layers.overrideProperty(markerId, {
+        //   default: {
+        //     image: ,
+        //   }
+        // });
+      }
+
+      for (let button of buttons) {
+        button.addEventListener("click", buttonPressed);
+      }
+    }
+
+  }
 
   //creating HTML block for path 
   function createPathMenu(geoJsonLineOnly, gpxPathLayerId, wayPoints) {
@@ -961,6 +1085,7 @@ function handleImageList(images) {
     // remove path layer and html block
     function removePath() {
       removePathBtn.parentElement.parentElement.parentElement.remove();
+      // markersList.classList.add('hide');
       let pathId = pathValue.getAttribute('pathId');
       hidePathLayer(pathId);
     }
@@ -968,9 +1093,9 @@ function handleImageList(images) {
     document.getElementById(removePathBtnId).addEventListener('click', removePath);
 
     // let containerFocus = pathContainer.addEventListener('click', () => {
-    //   console.log("click");
+    //   pathContainer.style.border = "1px solid #3b3cd0"
     // })
-    // console.log(containerFocus);
+
   }
 
   function hidePathLayer(pathId) {
@@ -1049,8 +1174,8 @@ function handleImageList(images) {
     handleFileSelectFromURL(file)
       .then(data => {
         data.features.forEach(function (feature) {
-          feature.properties.stroke = file.properties_color || "#FDF300";
-          feature.properties.fill = file.properties_color || "#FDF300";
+          feature.properties.stroke = "#FDF300";
+          feature.properties.fill = "#FDF300";
         })
         // console.log("3", data);
         handleGeojson(data)
