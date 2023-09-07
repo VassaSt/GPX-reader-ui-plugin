@@ -383,7 +383,8 @@ reearth.ui.show(`
     background-repeat: no-repeat;
     background-position: center;
   }
-/*
+
+  /*
   @media screen and (max-width: 901px) {
     .change-marker {
       display: none;
@@ -401,7 +402,9 @@ reearth.ui.show(`
     cursor: pointer;
   }
 
-  .change-marker:hover, .change-marker:active, .change-marker:focus {
+  .change-marker:hover,
+  .change-marker:active,
+  .change-marker:focus {
     width: 25px;
     height: 25px;
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18.5 12C20.4 12 22 13.6 22 15.5C22 18.1 18.5 22 18.5 22C18.5 22 15 18.1 15 15.5C15 13.6 16.6 12 18.5 12ZM18.5 16.8C19.2 16.8 19.8 16.2 19.7 15.6C19.7 15 19.1 14.4 18.5 14.4C17.9 14.4 17.3 14.9 17.3 15.6C17.3 16.2 17.8 16.8 18.5 16.8ZM21 7H3V19H13.5C14 19.4142 14.13 19.35 14.5 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V6C2 4.89 2.89 4.5 4 4.5H10L12 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V11.34C21.42 10.84 21.5 10.5 21 10V7Z" fill="%233B3CD0"/></svg>');
@@ -448,24 +451,23 @@ reearth.ui.show(`
     display: none;
   }
 
- .markers-list {
-  position: fixed;
-  top: 35%;
-  width: fit-content;
-  padding: 4px 8px;
-  background-color: var(--background);
-  color: var(--nutral);
-  font-family: Noto Sans;
-  font-size: 0.75rem;
-  font-style: normal;
-  font-weight: 500;
-  align-self: center;
-  border-radius: 4px;
-  border: 2px solid var(--border);
-  list-style: none;
-  z-index: 1;
- }
-
+  .markers-list {
+    position: fixed;
+    top: 35%;
+    width: fit-content;
+    padding: 4px 8px;
+    background-color: var(--background);
+    color: var(--nutral);
+    font-family: Noto Sans;
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: 500;
+    align-self: center;
+    border-radius: 4px;
+    border: 2px solid var(--border);
+    list-style: none;
+    z-index: 1;
+  }
 </style>
 <div class="height-44" id="wrapper">
   <h3 id="title" onclick="handleCloseOpenPopup(event)">
@@ -518,6 +520,7 @@ reearth.ui.show(`
 
   const newPath = document.getElementById("new-path");
   let markersList = document.getElementById("markersList");
+  let buttons;
 
   let i = 0;
   let containerId
@@ -533,6 +536,7 @@ reearth.ui.show(`
   let longId = "long";
   let fileName;
 
+
   window.addEventListener("message", async function (e) {
     if (e.source !== parent) return;
     reearth = e.source.reearth;
@@ -545,6 +549,7 @@ reearth.ui.show(`
       handleImageList(imageList);
     }
   })
+
 
   // put the triger to upload file on button
   const trigerInput = () => input.click();
@@ -583,6 +588,7 @@ reearth.ui.show(`
     // reset after each upload, allowing to consecutively upload the same file without any restrictions
     e.target.value = null;
   });
+
 
 
   function handleCloseOpenPopup(e) {
@@ -833,7 +839,7 @@ reearth.ui.show(`
       type: "icon",
       name: "Default",
       url: "no",
-      scale: 1
+      size: 1
     });
 
 
@@ -843,7 +849,7 @@ reearth.ui.show(`
         type: item.modelOptions || "icon",
         name: item.modelName,
         url: item.modelUrl,
-        scale: item.scale || 1
+        size: item.imageSize || 1
       });
     });
 
@@ -856,8 +862,8 @@ reearth.ui.show(`
       let imageId = imageListArray[i].id;
       let imageName = imageListArray[i].name;
       let imageUrl = imageListArray[i].url;
-      let imageScale = imageListArray[i].scale;
-      if ((imageId && imageName && imageUrl || imageScale) && (imageId !== imageListArray[imageListArray.length - 1]) && (imageId != undefined) && (imageId != "default")) {
+      let imageSize = imageListArray[i].size;
+      if ((imageId && imageName && imageUrl && imageSize) && (imageId !== imageListArray[imageListArray.length - 1]) && (imageId != undefined) && (imageId != "default")) {
         // console.log("IMAGE: ", imageId, imageName, imageUrl);
         newArray.push(imageListArray[i]);
       }
@@ -876,7 +882,6 @@ reearth.ui.show(`
 
       let firstOtion = document.createElement('option');
       firstOtion.textContent = "Choose an icon";
-      firstOtion.setAttribute('value', "Choose an icon");
       markersList.appendChild(firstOtion);
 
       contentWrap.appendChild(markersList);
@@ -888,10 +893,11 @@ reearth.ui.show(`
         imageNameBlock.innerHTML = item.name;
         imageNameBlock.setAttribute('id', item.id);
         imageNameBlock.setAttribute('value', item.url);
+        imageNameBlock.setAttribute('imageSize', item.size);
         markersList.appendChild(imageNameBlock);
       })
 
-      const buttons = document.querySelectorAll('.change-marker');
+      buttons = document.querySelectorAll('.change-marker');
       // console.log("change-marker btns : ", buttons);
 
       let buttonPressed = e => {
@@ -899,19 +905,21 @@ reearth.ui.show(`
         markersList.classList.toggle('show');
         // console.log(markersList);
 
-     // Get ID of Clicked Element
+        // Get ID of Clicked Element
         let markerId = e.target.id;
 
-
-        // image: = get the value of selected option 
+        // getting properties from selected option 
         function onChange() {
           var iconUrl = markersList.options[markersList.selectedIndex].value;
-          // console.log(iconUrl);
-          
-          reearth.layers.overrideProperty(markerId, {
-            default: {
-              image: iconUrl,
-            }
+          var iconSize = markersList.options[markersList.selectedIndex].getAttribute('imageSize');
+          let iconSizeToNumber = +iconSize;
+          console.log(typeof iconSizeToNumber);
+
+          reearth.layers.overrideProperty((markerId), {
+              default: {
+                image: iconUrl,
+                imageSize: iconSizeToNumber,
+              }
           });
 
         }

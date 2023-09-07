@@ -28,6 +28,6 @@ extensions:
             - id: modelName
               type: string
               title: Name
-            - id: scale
+            - id: imageSize
               type: number
-              title: Scale
+              title: Size
