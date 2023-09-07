@@ -383,12 +383,13 @@ reearth.ui.show(`
     background-repeat: no-repeat;
     background-position: center;
   }
-
-  /* @media screen and (min-width: 901px) {
-    .change-marker{
+/*
+  @media screen and (max-width: 901px) {
+    .change-marker {
       display: none;
     }
-  } */
+  }
+  */
 
   .change-marker {
     position: relative;
@@ -400,7 +401,7 @@ reearth.ui.show(`
     cursor: pointer;
   }
 
-  .change-marker:hover {
+  .change-marker:hover, .change-marker:active, .change-marker:focus {
     width: 25px;
     height: 25px;
     background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M18.5 12C20.4 12 22 13.6 22 15.5C22 18.1 18.5 22 18.5 22C18.5 22 15 18.1 15 15.5C15 13.6 16.6 12 18.5 12ZM18.5 16.8C19.2 16.8 19.8 16.2 19.7 15.6C19.7 15 19.1 14.4 18.5 14.4C17.9 14.4 17.3 14.9 17.3 15.6C17.3 16.2 17.8 16.8 18.5 16.8ZM21 7H3V19H13.5C14 19.4142 14.13 19.35 14.5 20H4C3.46957 20 2.96086 19.7893 2.58579 19.4142C2.21071 19.0391 2 18.5304 2 18V6C2 4.89 2.89 4.5 4 4.5H10L12 6H20C20.5304 6 21.0391 6.21071 21.4142 6.58579C21.7893 6.96086 22 7.46957 22 8V11.34C21.42 10.84 21.5 10.5 21 10V7Z" fill="%233B3CD0"/></svg>');
@@ -516,7 +517,7 @@ reearth.ui.show(`
 
 
   const newPath = document.getElementById("new-path");
-  const markersList = document.getElementById("markersList");
+  let markersList = document.getElementById("markersList");
 
   let i = 0;
   let containerId
@@ -542,7 +543,6 @@ reearth.ui.show(`
       property = newProperty;
       imageList = property.models;
       handleImageList(imageList);
-
     }
   })
 
@@ -608,7 +608,7 @@ reearth.ui.show(`
           }
           if (expanded) {
             document.documentElement.classList.add("extendedh", "extendedv");
-            // markersList.classList.add('hide');
+            document.getElementById("markersList").classList.add('hide');
           } else {
             document.documentElement.classList.remove("extendedh", "extendedv");
           }
@@ -861,11 +861,8 @@ reearth.ui.show(`
         // console.log("IMAGE: ", imageId, imageName, imageUrl);
         newArray.push(imageListArray[i]);
       }
-
       createOptions(newArray);
-      console.log("newArray: ", newArray);
-
-
+      // console.log("newArray: ", newArray);
     }
 
     function createOptions(data) {
@@ -879,23 +876,23 @@ reearth.ui.show(`
 
       let firstOtion = document.createElement('option');
       firstOtion.textContent = "Choose an icon";
-      firstOtion.setAttribute('selected', "selected")
+      firstOtion.setAttribute('value', "Choose an icon");
       markersList.appendChild(firstOtion);
 
       contentWrap.appendChild(markersList);
 
-      console.log(markersList);
+      // console.log(markersList);
 
       data.forEach((item) => {
         let imageNameBlock = document.createElement('option');
         imageNameBlock.innerHTML = item.name;
-        imageNameBlock.setAttribute('id', item.id)
-        imageNameBlock.setAttribute('value', item.url)
+        imageNameBlock.setAttribute('id', item.id);
+        imageNameBlock.setAttribute('value', item.url);
         markersList.appendChild(imageNameBlock);
       })
 
       const buttons = document.querySelectorAll('.change-marker');
-      console.log("change-marker btns : ", buttons);
+      // console.log("change-marker btns : ", buttons);
 
       let buttonPressed = e => {
         markersList.classList.toggle('hide');
@@ -906,14 +903,21 @@ reearth.ui.show(`
         let markerId = e.target.id;
 
 
+        // image: = get the value of selected option 
+        function onChange() {
+          var iconUrl = markersList.options[markersList.selectedIndex].value;
+          // console.log(iconUrl);
+          
+          reearth.layers.overrideProperty(markerId, {
+            default: {
+              image: iconUrl,
+            }
+          });
 
-// image: = get the value of selectet option 
+        }
+        markersList.onchange = onChange;
+        onChange();
 
-        // reearth.layers.overrideProperty(markerId, {
-        //   default: {
-        //     image: ,
-        //   }
-        // });
       }
 
       for (let button of buttons) {
@@ -1055,10 +1059,10 @@ reearth.ui.show(`
     function rewriteAllProperties() {
 
       let strokeWidth = inputForWidth.value;
-      console.log(strokeWidth);
+      // console.log(strokeWidth);
 
       let colorCode = inputForColor.value;
-      console.log(colorCode);
+      // console.log(colorCode);
 
       let jsonProperties = { "stroke-width": strokeWidth, "fill": colorCode, "stroke": colorCode };
       let jsonPropertiesString = JSON.stringify(jsonProperties);
@@ -1067,7 +1071,7 @@ reearth.ui.show(`
         feature.properties = JSON.parse(jsonPropertiesString);
       })
 
-      console.log("geoJsonLineOnly", geoJsonLineOnly);
+      // console.log("geoJsonLineOnly", geoJsonLineOnly);
 
       const geoJsonString = JSON.stringify(geoJsonLineOnly);
 
@@ -1085,7 +1089,8 @@ reearth.ui.show(`
     // remove path layer and html block
     function removePath() {
       removePathBtn.parentElement.parentElement.parentElement.remove();
-      // markersList.classList.add('hide');
+      document.getElementById("markersList").classList.add('hide');
+      document.getElementById("markersList").remove('show');
       let pathId = pathValue.getAttribute('pathId');
       hidePathLayer(pathId);
     }
@@ -1150,8 +1155,8 @@ reearth.ui.show(`
     addPathLayer(geoJsonLineOnly, wayPoints);
     // console.log("7");
 
-    console.log("geoJsonLineOnly", geoJsonLineOnly);
-    console.log("wayPoints", wayPoints);
+    // console.log("geoJsonLineOnly", geoJsonLineOnly);
+    // console.log("wayPoints", wayPoints);
   }
 
   // converting gpx file to geoJson
@@ -1162,7 +1167,7 @@ reearth.ui.show(`
         const parser = new DOMParser();
         const gpxDocument = parser.parseFromString(gpxString, 'text/xml');
         const geoJson = toGeoJSON.gpx(gpxDocument);
-        console.log("geojson: ", geoJson); // output GeoJSON object to console (optional)
+        // console.log("geojson: ", geoJson); // output GeoJSON object to console (optional)
         // console.log("2");
         return geoJson
       });
