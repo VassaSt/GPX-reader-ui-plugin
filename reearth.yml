@@ -7,25 +7,25 @@ extensions:
     name: GPX Reader ui plugin
     schema:
       groups:
-        - id: models
+        - id: images
           title: シンボル
           list: true
-          representativeField: modelName
+          representativeField: imageName
           fields:
-            - id: modelOptions
+            - id: imageOptions
               type: string
-              title: Model
-              defaultValue: icon
+              title: Image
+              defaultValue: image
               choices:
-                - key: icon
-                  label: Icon
+                - key: image
+                  label: Image
                 - key: model
                   label: Model
-            - id: modelUrl
+            - id: imageUrl
               type: url
               title: Upload File
               ui: file
-            - id: modelName
+            - id: imageName
               type: string
               title: Name
             - id: imageSize
